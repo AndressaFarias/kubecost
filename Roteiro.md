@@ -10,3 +10,6 @@ https://docs.kubecost.com/
 * Retorna a doc anterior - ws-out-of-cluster 
 
     * pausa na leitura da doc 
+
+
+    
