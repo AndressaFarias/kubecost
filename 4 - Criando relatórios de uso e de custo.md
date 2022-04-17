@@ -1,3 +1,4 @@
+>> detalhes STEP 1
 # Criando relatórios de uso e de custo
 _[Creating Cost and Usage Reports](
 https://docs.aws.amazon.com/cur/latest/userguide/cur-create.html)_
@@ -125,14 +126,9 @@ A substituição de relatórios pode economizar nos custos de armazenamento do A
  * Amazon Redshift ou Amazon QuickSight: compactação .gz
 
 
->> Enable report data integration for = Amazon Athena
-
-
 15. Avançar.
 
-
 16. Depois de revisar as configurações do seu relatório, escolha Revisar e concluir.
-
 
 
 Você sempre pode retornar à seção Relatórios de custo e uso do console do Billing and Cost Management para ver quando seus relatórios foram atualizados pela última vez.
