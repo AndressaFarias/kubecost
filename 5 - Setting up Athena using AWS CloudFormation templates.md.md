@@ -3,7 +3,7 @@
 # Configurar o Athena usando template AWS CloudFormation
 📙 [Setting up Athena using AWS CloudFormation templates](https://docs.aws.amazon.com/cur/latest/userguide/use-athena-cf.html)
 
-Configurando o Athena usando modelos do AWS CloudFormation
+Configurando o Athena usando template do AWS CloudFormation
 
 🛑 **Important**
 O AWS CloudFormation não oferece suporte a recursos entre regiões. Se você planeja usar um AWS CloudFormation template, você deve criar todos os recursos na mesma AWS Região. A região deve ser compatível com os seguintes serviços:
@@ -12,7 +12,7 @@ O AWS CloudFormation não oferece suporte a recursos entre regiões. Se você pl
 * AWS Glue
 * Amazon Athena
 
-Para simplificar e automatizar a integração de seus relatórios de Cost and Usage com o Athena, a AWS fornece um yemplate do AWS CloudFormation com vários recursos importantes junto com os relatórios que você configurou para a integração com o Athena. O template do AWS CloudFormation inclui um AWS Glue crawler, AWS Glue database e um AWS Lambda events.
+Para simplificar e automatizar a integração de seus relatórios de Cost and Usage com o Athena, a AWS fornece um template do AWS CloudFormation com vários recursos importantes junto com os relatórios que você configurou para a integração com o Athena. O template do AWS CloudFormation inclui um AWS Glue crawler, AWS Glue database e um AWS Lambda events.
 
 
 O processo de configuração da integração do Athena usando o AWS CloudFormation remove todos os eventos do Amazon S3 que seu bucket já possa ter. Isso pode afetar negativamente quaisquer processos baseados em eventos existentes que você tenha para um relatório existente do AWS CUR. É altamente recomendável que você crie um novo bucket do Amazon S3 e um novo relatório do AWS CUR para usar com o Athena.
@@ -52,7 +52,6 @@ Antes de usar um modelo do CloudFormation para automatizar a integração do Ath
 12. **Next**.
 
 13. Para Stack name, insira um nome para seu template e escolha **Next**. 
-
 
 14. **Next**.
 
