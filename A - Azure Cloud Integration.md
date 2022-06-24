@@ -10,5 +10,53 @@ Para configurar os custos fora do cluster (out-of-cluster  - OOC) para o Azure n
 
 
 ## Step 1: Export Azure Cost Report
-Siga este guia anotando o nome que você usa para o relatório de custo exportado e selecione a opção diária do mês até a data de como os relatórios serão criados.
-[Tutorial: Create and manage exported data](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-export-acm-data?tabs=azure-portal)
+Siga este guia anotando o nome que você usa para o relatório de custo exportado e selecione a opção diária do mês até a data de como os relatórios serão criados. [Tutorial: Create and manage exported data](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-export-acm-data?tabs=azure-portal).
+
+Levará algumas horas para gerar o primeiro relatório, após o qual o Kubecost poderá usar a API de armazenamento do Azure para extrair esses dados.
+
+> **NOTE** : se você tiver dados confidenciais em uma conta de armazenamento do Azure e não quiser conceder acesso a eles, crie uma conta de armazenamento do Azure separada para armazenar sua exportação de dados de custo.
+
+
+## Step 2: Provide Access to Azure Storage API
+
+Os valores necessários para fornecer acesso à Azure Storage Account (conta de armazenamento do Azure) para onde os dados de custo estão sendo exportados podem ser encontrados no portal do Azure na conta de armazenamento para onde os dados de custo estão sendo exportados.
+
+* `<SUBSCRIPTION_ID>` : é o id da assinatura para a qual os arquivos exportados estão sendo gerados.
+    * Entre no portal do Azure. > Abaixo do título de serviços do Azure, selecione Assinaturas. Se você não vir Assinaturas aqui, use a caixa de pesquisa para encontrá-la.
+
+* `<STORAGE_ACCOUNT_NAME>` : é o nome da conta de armazenamento em que o CSV exportado está sendo armazenado.
+
+
+* `<STORE_ACCESS_KEY>` : pode ser encontrado selecionando a opção “Access Keys” na barra lateral de navegação e selecionando “Show Keys”. Usar qualquer uma das duas chaves funcionará. (na storage criada)
+
+* `<REPORT_CONTAINER_NAME>` : é o nome que você escolhe para o relatório de custo exportado ao configurá-lo. Este é o nome do contêiner onde os relatórios de custo CSV são salvos em sua conta de armazenamento.
+
+* `<AZURE_CONTAINER_PATH>` : é um valor opcional que deve ser usado se houver mais de um relatório de cobrança exportado para o contêiner configurado. O caminho fornecido deve ter apenas uma exportação de faturamento porque o kubecost recuperará o relatório de faturamento mais recente de um determinado mês encontrado no caminho.
+
+
+* `<<AZURE_CLOUD>>` : é um valor opcional que denota a nuvem onde existe a conta de armazenamento, os valores possíveis são `public` e `gov`. O padrão é `público`.
+
+
+Com esses valores em mãos, agora você pode fornecê-los ao Kubecost para permitir o acesso à API de armazenamento do Azure.
+
+Para criar esse segredo, você precisará criar um arquivo JSON que deve ser denominado azure-storage-config.json com o seguinte formato:
+
+~~~json
+{
+  "azureSubscriptionID": "<SUBSCRIPTION_ID>",
+  "azureStorageAccount": "<STORAGE_ACCOUNT_NAME>",
+  "azureStorageAccessKey": "<STORE_ACCESS_KEY>",
+  "azureStorageContainer": "<REPORT_CONTAINER_NAME>",
+  "azureContainerPath": "<AZURE_CONTAINER_PATH>",
+  "azureCloud": "<AZURE_CLOUD>"
+}
+~~~
+
+Depois de preencher os valores, use este comando para criar o segredo: `kubectl create secret generic <SECRET_NAME> --from-file=azure-storage-config.json -n kubecost`
+
+Depois que o segredo for criado, defina `.Values.kubecostProductConfigs.azureStorageSecretName` como `<SECRET_NAME>` e atualize o Kubecost via Helm, outros valores relacionados ao Armazenamento do Azure (consulte outro método) não devem ser definidos.
+
+Após uma configuração bem-sucedida do Azure fora dos custos de cluster, ao abrir a página Assets dos custos do Kubecost, os custos serão divididos por serviço e não haverá mais um banner na parte superior da tela informando que OOC não está configurado.
+
+`helm upgrade kubecost kubecost/cost-analyzer --namespace kubecost --reuse-values \
+--set kubecostProductConfigs.azureStorageSecretName="kubecost-azure-provider-access"
