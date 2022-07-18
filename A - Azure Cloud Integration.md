@@ -3,7 +3,7 @@
 Conectar sua conta do Azure ao Kubecost permite visualizar as métricas do Kubernetes side-by-side (lado a lado) com o custo dos serviços de nuvem externos, por exemplo, Azure Database Services. Além disso, permite que o Kubecost reconcilie os gastos medidos do Kubernetes com sua fatura real do Azure. Isso dá às equipes que executam o Kubernetes uma visão completa e precisa dos custos. Leia a documentação do [Cloud Integrations](https://guide.kubecost.com/hc/en-us/articles/4412369153687) para obter mais informações sobre como o Kubecost se conecta com os provedores de serviços em nuvem. 
 
 
-Para configurar os custos fora do cluster (out-of-cluster  - OOC) para o Azure no Kubecost, você só precisa configurar a exportação diária de relatórios de custo para o armazenamento do Azure. Depois que os relatórios de custo forem exportados para o Armazenamento do Azure, o Kubecost os acessará por meio da API do Armazenamento do Azure para exibir seus dados de custo OOC juntamente com seus custos no cluster.
+Para configurar os custos fora do cluster (out-of-cluster - OOC) para o Azure no Kubecost, você só precisa configurar a exportação diária de relatórios de custo para o armazenamento do Azure. Depois que os relatórios de custo forem exportados para o Armazenamento do Azure, o Kubecost os acessará por meio da API do Armazenamento do Azure para exibir seus dados de custo OOC juntamente com seus custos no cluster.
 
 
 >> Um repositório do github com arquivos de amostra usados ​​nas instruções abaixo pode ser encontrado aqui: https://github.com/kubecost/poc-common-configurations/tree/main/azure
@@ -60,3 +60,14 @@ Após uma configuração bem-sucedida do Azure fora dos custos de cluster, ao ab
 
 `helm upgrade kubecost kubecost/cost-analyzer --namespace kubecost --reuse-values \
 --set kubecostProductConfigs.azureStorageSecretName="kubecost-azure-provider-access"
+
+## Step 3: Tagging Azure resources
+
+O Kubecost utiliza a marcação do Azure para alocar os custos dos recursos do Azure fora do cluster Kubernetes para conceitos específicos do Kubernetes, como namespaces, pods etc. Esses custos são mostrados em um painel unificado na interface Kubecost.
+
+Para alocar recursos externos do Azure para um conceito do Kubernetes, use o seguinte esquema de nomenclatura de marca:
+
+
+## Troubleshooting and Debugging
+Se você não conseguiu ver seus custos OOC no painel, aqui estão algumas etapas que você pode seguir para tentar resolver o problema. Primeiro, verifique se você usou os valores corretos no arquivo JSON usado para criar seu segredo. Além disso, se não houver custos no cluster para um dia específico, o custo OOC também não será exibido para esse dia.
+
