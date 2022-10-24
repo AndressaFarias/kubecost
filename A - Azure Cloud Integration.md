@@ -22,14 +22,19 @@ Levará algumas horas para gerar o primeiro relatório, após o qual o Kubecost 
 Os valores necessários para fornecer acesso à Azure Storage Account (conta de armazenamento do Azure) para onde os dados de custo estão sendo exportados podem ser encontrados no portal do Azure na conta de armazenamento para onde os dados de custo estão sendo exportados.
 
 * `<SUBSCRIPTION_ID>` : é o id da assinatura para a qual os arquivos exportados estão sendo gerados.
-    * Entre no portal do Azure. > Abaixo do título de serviços do Azure, selecione Assinaturas. Se você não vir Assinaturas aqui, use a caixa de pesquisa para encontrá-la.
+    * Entre no portal do Azure.
+    * Abaixo do título de serviços do Azure, selecione Assinaturas. 
+    * Se você não vir Assinaturas aqui, use a caixa de pesquisa para encontrá-la.
+
 
 * `<STORAGE_ACCOUNT_NAME>` : é o nome da conta de armazenamento em que o CSV exportado está sendo armazenado.
 
 
 * `<STORE_ACCESS_KEY>` : pode ser encontrado selecionando a opção “Access Keys” na barra lateral de navegação e selecionando “Show Keys”. Usar qualquer uma das duas chaves funcionará. (na storage criada)
 
+
 * `<REPORT_CONTAINER_NAME>` : é o nome que você escolhe para o relatório de custo exportado ao configurá-lo. Este é o nome do contêiner onde os relatórios de custo CSV são salvos em sua conta de armazenamento.
+
 
 * `<AZURE_CONTAINER_PATH>` : é um valor opcional que deve ser usado se houver mais de um relatório de cobrança exportado para o contêiner configurado. O caminho fornecido deve ter apenas uma exportação de faturamento porque o kubecost recuperará o relatório de faturamento mais recente de um determinado mês encontrado no caminho.
 
@@ -51,6 +56,8 @@ Para criar esse segredo, você precisará criar um arquivo JSON que deve ser den
   "azureCloud": "<AZURE_CLOUD>"
 }
 ~~~
+
+
 
 Depois de preencher os valores, use este comando para criar o segredo: `kubectl create secret generic <SECRET_NAME> --from-file=azure-storage-config.json -n kubecost`
 
